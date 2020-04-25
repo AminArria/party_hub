@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  postgres:
+    container_name: party_hub_db
+    image: postgres:11.5
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=party_hub_user
+      - POSTGRES_PASSWORD=party_hub_password
+      - POSTGRES_DB=party_hub_dev
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./docker-data/postgres/data:/var/lib/postgresql/data/
