@@ -17,6 +17,9 @@ defmodule PartyHubWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    resources "/rooms", RoomController
+    get "/rooms/:id/join", RoomController, :join
+    get "/rooms/:id/party", RoomController, :party
   end
 
   # Other scopes may use custom stacks.

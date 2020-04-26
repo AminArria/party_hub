@@ -7,8 +7,19 @@
 # General application configuration
 use Mix.Config
 
+# Twilio API credentials
+account_sid = System.get_env("TWILIO_ACCOUNT_SID") || raise "environment variable TWILIO_ACCOUNT_SID is missing."
+auth_token = System.get_env("TWILIO_AUTH_TOKEN") || raise "environment variable TWILIO_AUTH_TOKEN is missing."
+api_key = System.get_env("TWILIO_API_KEY") || raise "environment variable TWILIO_API_KEY is missing."
+api_secret = System.get_env("TWILIO_API_SECRET") || raise "environment variable TWILIO_API_SECRET is missing."
+
+# App config
 config :party_hub,
-  ecto_repos: [PartyHub.Repo]
+  ecto_repos: [PartyHub.Repo],
+  account_sid: account_sid,
+  auth_token: auth_token,
+  api_key: api_key,
+  api_secret: api_secret
 
 # Configures the endpoint
 config :party_hub, PartyHubWeb.Endpoint,

@@ -1,0 +1,13 @@
+<h1><%= @room.name %></h1>
+
+<p style="word-wrap: anywhere;">
+  <strong>JWT:</strong>
+  <%= @jwt %>
+</p>
+<p>
+  <strong>twilio room:</strong>
+  <%= @room.twilio_room_id %>
+</p>
+
+<span><%= link "Edit", to: Routes.room_path(@conn, :edit, @room) %></span>
+<span><%= link "Back", to: Routes.room_path(@conn, :index) %></span>

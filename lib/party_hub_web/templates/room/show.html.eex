@@ -1,0 +1,25 @@
+<h1>Show Room</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @room.name %>
+  </li>
+
+  <li>
+    <strong>Twilio room:</strong>
+    <%= @room.twilio_room_id %>
+  </li>
+
+</ul>
+
+<%= form_for :user, Routes.room_path(@conn, :join, @room.id), [method: :get], fn f -> %>
+  <%= label f, :name %>
+  <%= text_input f, :name, required: true %>
+
+  <%= submit "Join Party!"%>
+<% end %>
+
+<span><%= link "Edit", to: Routes.room_path(@conn, :edit, @room) %></span>
+<span><%= link "Back", to: Routes.room_path(@conn, :index) %></span>
