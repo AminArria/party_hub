@@ -23,9 +23,11 @@ defmodule PartyHubWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", PartyHubWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", PartyHubWeb do
+    pipe_through :api
+
+    post "/party/subscribe_dj", RoomController, :subscribe_dj
+  end
 
   # Enables LiveDashboard only for development
   #

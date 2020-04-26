@@ -88,11 +88,26 @@ defmodule PartyHubWeb.RoomController do
       )
       |> ExTwilio.JWT.AccessToken.to_jwt!
 
-    redirect(conn, to: Routes.room_path(conn, :party, room.id, identity: identity, token: jwt))
+    redirect(conn, to: Routes.room_path(conn, :party, room.id, room_name: room.twilio_room_id, identity: identity, token: jwt))
   end
 
   def party(conn, %{"id" => id, "token" => token}) do
     room = Parties.get_room!(id)
     render(conn, :party, room: room, jwt: token)
+  end
+
+  def subscribe_dj(conn, %{"room_name" => room_name, "user" => user}) do
+    # TODO: Abstract this calls to its own module
+    # TODO: check if there was an error with this request
+    HTTPoison.post(
+      "https://video.twilio.com/v1/Rooms/#{room_name}/Participants/#{user}/SubscribeRules",
+      {:form, [{"Rules", "[{\"type\": \"include\", \"track\": \"dj_audio\"},{\"type\": \"include\", \"track\": \"dj_video\"}]"}]},
+      [],
+      [hackney: [basic_auth: {Application.get_env(:party_hub, :account_sid), Application.get_env(:party_hub, :auth_token)}]]
+    )
+
+    conn
+    |> put_status(200)
+    |> json(%{})
   end
 end

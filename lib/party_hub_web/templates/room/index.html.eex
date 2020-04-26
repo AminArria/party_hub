@@ -28,4 +28,3 @@
 <span><%= link "New Room", to: Routes.room_path(@conn, :new) %></span>
 
 <div id="local-media"></div>
-<div id="remote-media-div"></div>

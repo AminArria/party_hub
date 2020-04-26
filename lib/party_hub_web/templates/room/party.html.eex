@@ -9,5 +9,7 @@
   <%= @room.twilio_room_id %>
 </p>
 
+<div id="remote-media-div"></div>
+
 <span><%= link "Edit", to: Routes.room_path(@conn, :edit, @room) %></span>
 <span><%= link "Back", to: Routes.room_path(@conn, :index) %></span>
