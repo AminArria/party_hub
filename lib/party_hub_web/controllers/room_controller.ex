@@ -91,9 +91,12 @@ defmodule PartyHubWeb.RoomController do
     redirect(conn, to: Routes.room_path(conn, :party, room.id, room_name: room.twilio_room_id, identity: identity, token: jwt))
   end
 
-  def party(conn, %{"id" => id, "token" => token}) do
+  def party(conn, %{"id" => id, "token" => token, "identity" => identity}) do
+    # TODO: this comes from the hack in join/2 just dropping the appended format
+    name = String.slice(identity, 0..-12)
+
     room = Parties.get_room!(id)
-    render(conn, :party, room: room, jwt: token)
+    render(conn, :party, room: room, jwt: token, name: name)
   end
 
   def subscribe_dj(conn, %{"room_name" => room_name, "user" => user}) do

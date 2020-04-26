@@ -1,13 +1,17 @@
 <h1><%= @room.name %></h1>
 
-<p style="word-wrap: anywhere;">
-  <strong>JWT:</strong>
-  <%= @jwt %>
-</p>
-<p>
-  <strong>twilio room:</strong>
-  <%= @room.twilio_room_id %>
-</p>
+<button id="start-party">Start Party!</button>
+<div class="party-tools">
+  <button id="leave-party">Leave party</button>
+  <div class="party-share-video">
+    <button id="start-video">Share video</button>
+    <button id="stop-video">Stop sharing video</button>
+  </div>
+  <div class="party-share-audio">
+    <button id="start-audio">Share audio</button>
+    <button id="stop-audio">Stop sharing audio</button>
+  </div>
+</div>
 
 <div id="remote-media-div"></div>
 
