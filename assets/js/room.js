@@ -25,6 +25,19 @@ function selfDisconnect(room) {
     leave_party.addEventListener("click", () => room.disconnect());
 }
 
+function insertParticipant(participant) {
+    console.log(participant.identity + ' joined the Room');
+    const party_members = document.getElementById('party-members');
+
+    new_member_li = document.createElement("li");
+    new_member_li.id = participant.identity;
+
+    text = document.createTextNode(participant.identity);
+    new_member_li.appendChild(text);
+
+    party_members.appendChild(new_member_li);
+}
+
 function roomHandlers(room) {
     selfDisconnect(room);
 };
@@ -49,6 +62,8 @@ function connectToParty() {
             attachedElements.forEach(element => element.remove());
         });
 
+        room.on('participantConnected', insertParticipant);
+
         // If there's no one I'm the DJ now
         if (room.participants.size === 0) {
             Twilio.Video.createLocalTracks({
@@ -61,6 +76,7 @@ function connectToParty() {
             });
         } else {
             subscribeToDj();
+            room.participants.forEach(insertParticipant);
         }
 
         // TODO: do we need this?
@@ -74,6 +90,8 @@ function connectToParty() {
         });
         room.on('participantDisconnected', function(participant) {
             console.log(participant.identity + ' left the Room');
+
+            document.getElementById(participant.identity).remove();
         });
     });
 }

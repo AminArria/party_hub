@@ -13,6 +13,11 @@
   </div>
 </div>
 
+<div>
+<h2>Partygoers</h2>
+<ul id="party-members"></ul>
+</div>
+
 <div id="remote-media-div"></div>
 
 <span><%= link "Edit", to: Routes.room_path(@conn, :edit, @room) %></span>
