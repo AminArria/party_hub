@@ -27,6 +27,7 @@ defmodule PartyHubWeb.Router do
     pipe_through :api
 
     post "/party/subscribe_dj", RoomController, :subscribe_dj
+    post "/party/subscribe", RoomController, :subscribe
   end
 
   # Enables LiveDashboard only for development

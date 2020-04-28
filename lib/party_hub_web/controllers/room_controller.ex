@@ -113,4 +113,19 @@ defmodule PartyHubWeb.RoomController do
     |> put_status(200)
     |> json(%{})
   end
+
+  def subscribe(conn, %{"room_name" => room_name, "user" => user, "publisher" => publisher}) do
+    # TODO: Abstract this calls to its own module
+    # TODO: check if there was an error with this request
+    HTTPoison.post(
+      "https://video.twilio.com/v1/Rooms/#{room_name}/Participants/#{user}/SubscribeRules",
+      {:form, [{"Rules", "[{\"type\": \"include\", \"track\": \"dj_audio\"},{\"type\": \"include\", \"track\": \"dj_video\"},{\"type\": \"include\", \"publisher\": \"#{publisher}\"}]"}]},
+      [],
+      [hackney: [basic_auth: {Application.get_env(:party_hub, :account_sid), Application.get_env(:party_hub, :auth_token)}]]
+    ) |> IO.inspect
+
+    conn
+    |> put_status(200)
+    |> json(%{})
+  end
 end
