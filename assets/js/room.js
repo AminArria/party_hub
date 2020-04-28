@@ -34,9 +34,10 @@ function selfDisconnect(room) {
 
     leave_party = document.getElementById('leave-party');
     leave_party.addEventListener("click", () => {
+        console.log("Disconnected from Room: ${room.name}");
         room.disconnect();
-        room.localParticipant.tracks.forEach((track) => {
-            track.track.stop();
+        room.localParticipant.tracks.forEach((publishTrack) => {
+            publishTrack.track.stop();
         });
     });
 }
@@ -72,15 +73,31 @@ function selfStartTrack(room) {
         }).then(function(localTracks) {
             room.localParticipant.publishTracks(localTracks).then(() => {
                 console.log('Started sending video and audio tracks');
-                share_party.style.display = "none";
+                // share_party.style.display = "none";
+                // selfStopTrack(room);
             });
+        });
+    });
+}
+
+function selfStopTrack(room) {
+    const stop_share_party = document.getElementById('stop-share');
+
+    stop_share_party.addEventListener('click', () => {
+        room.localParticipant.tracks.forEach((publishTrack) => {
+            room.localParticipant.unpublishTrack(publishTrack.track);
+            publishTrack.track.stop();
         });
     });
 }
 
 function roomHandlers(room) {
     selfDisconnect(room);
-    selfStartTrack(room);
+
+    if (!room.localParticipant.isDj) {
+        selfStartTrack(room);
+        selfStopTrack(room);
+    }
 };
 
 function connectToParty() {

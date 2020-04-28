@@ -1,9 +1,9 @@
 <h1><%= @room.name %></h1>
 
 <button id="start-party">Start Party!</button>
-<div class="party-tools">
+<div>
   <button id="leave-party">Leave party</button>
-  <div class="party-share">
+  <div>
     <button id="start-share">Share party</button>
     <button id="stop-share">Stop sharing party</button>
   </div>
