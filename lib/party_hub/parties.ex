@@ -101,4 +101,12 @@ defmodule PartyHub.Parties do
   def change_room(%Room{} = room, attrs \\ %{}) do
     Room.changeset(room, attrs)
   end
+
+  def get_recents() do
+    q =
+      from r in Room,
+      order_by: [desc: r.inserted_at]
+
+    Repo.all(q)
+  end
 end

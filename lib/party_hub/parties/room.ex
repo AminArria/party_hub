@@ -1,5 +1,5 @@
 defmodule PartyHub.Parties.Room do
-  use Ecto.Schema
+  use PartyHub.Schema
   import Ecto.Changeset
 
   schema "rooms" do
