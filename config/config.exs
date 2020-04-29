@@ -21,6 +21,10 @@ config :party_hub,
   api_key: api_key,
   api_secret: api_secret
 
+# Configures Ecto migrations
+config :party_hub, PartyHub.Repo,
+  migration_timestamps: [type: :timestamptz]
+
 # Configures the endpoint
 config :party_hub, PartyHubWeb.Endpoint,
   url: [host: "localhost"],
