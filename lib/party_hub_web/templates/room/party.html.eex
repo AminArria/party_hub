@@ -1,27 +1,48 @@
-<h1><%= @room.name %></h1>
+<section id="party-banner" class="hero is-dark is-bold is-fullheight">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title">
+        <%= @room.name %>
+      </h1>
+      <h2 class="subtitle">
+        <%= @room.description || "This is THE party!" %>
+      </h2>
+      <%= form_for :party, '#', [method: :get, id: "start-party"], fn f -> %>
+        <%= hidden_input f, :id, value: @room.id %>
+        <div class="field has-addons has-addons-centered">
+          <div class="control">
+            <%= text_input f, :name, class: "input", placeholder: "Say your name!", required: true %>
+          </div>
+          <div class="control">
+            <%= submit "Start Party!", class: "button is-info" %>
+          </div>
+        </div>
+      <% end %>
+      <div id="party-stuff" class="hidden">
+        <p id="party-welcome"></p>
+        <div>
+          <button id="leave-party" class="button is-danger has-text-weight-bold">Leave party</button>
+          <button id="start-share" class="button is-primary has-text-weight-bold">Share party!</button>
+          <button id="stop-share" class="button is-warning has-text-weight-bold">Stop sharing party</button>
+        </div>
+      </div>
 
-<%= form_for :party, '#', [method: :get, id: "start-party"], fn f -> %>
-  <%= label f, :name %>
-  <%= text_input f, :name, required: true %>
-  <%= hidden_input f, :id, value: @room.id %>
-
-  <%= submit "Start Party!"%>
-<% end %>
-
-<div>
-  <button id="leave-party">Leave party</button>
-  <div>
-    <button id="start-share">Share party</button>
-    <button id="stop-share">Stop sharing party</button>
+    </div>
   </div>
-</div>
+</section>
 
-<div>
-<h2>Partygoers</h2>
-<ul id="party-members"></ul>
-</div>
+<section class="section">
+  <div class="container">
 
-<div id="remote-media-div"></div>
+    <div>
+    <h2>Partygoers</h2>
+    <ul id="party-members"></ul>
+    </div>
 
-<span><%= link "Edit", to: Routes.room_path(@conn, :edit, @room) %></span>
-<span><%= link "Back", to: Routes.room_path(@conn, :index) %></span>
+    <div id="remote-media-div"></div>
+
+    <span><%= link "Edit", to: Routes.room_path(@conn, :edit, @room) %></span>
+    <span><%= link "Back", to: Routes.room_path(@conn, :index) %></span>
+
+  </div>
+</section>

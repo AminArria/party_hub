@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>PartyHub · Phoenix Framework</title>
+    <title>PartyHub</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script defer src="//media.twiliocdn.com/sdk/js/video/releases/2.0.0/twilio-video.min.js"></script>
@@ -43,9 +43,9 @@
         </div>
       </div>
     </nav>
+        <%= @inner_content %>
     <section class="section">
       <div class="container">
-        <%= @inner_content %>
       </div>
     </section>
   </body>

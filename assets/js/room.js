@@ -34,7 +34,8 @@ function selfDisconnect(room) {
 
     leave_party = document.getElementById('leave-party');
     leave_party.addEventListener("click", () => {
-        console.log("Disconnected from Room: ${room.name}");
+        console.log(`Disconnected from Room: ${room.name}`);
+        partyEnd();
         room.disconnect();
         room.localParticipant.tracks.forEach((publishTrack) => {
             publishTrack.track.stop();
@@ -73,17 +74,16 @@ function insertParticipant(participant) {
 }
 
 function selfStartTrack(room) {
-    const share_party = document.getElementById('start-share');
 
-    share_party.addEventListener('click', () => {
+    start_share.addEventListener('click', () => {
         Twilio.Video.createLocalTracks({
             audio: true,
             video: true,
         }).then(function(localTracks) {
             room.localParticipant.publishTracks(localTracks).then(() => {
                 console.log('Started sending video and audio tracks');
-                // share_party.style.display = "none";
-                // selfStopTrack(room);
+                start_share.classList.add('hidden');
+                stop_share.classList.remove('hidden');
             });
         });
     });
@@ -97,6 +97,8 @@ function selfStopTrack(room) {
             room.localParticipant.unpublishTrack(publishTrack.track);
             publishTrack.track.stop();
         });
+        start_share.classList.remove('hidden');
+        stop_share.classList.add('hidden');
     });
 }
 
@@ -109,6 +111,26 @@ function roomHandlers(room) {
     }
 };
 
+function partyInit() {
+    party_banner.classList.remove("is-fullheight");
+    party_welcome.textContent = `Welcome to the party ${name}!`;
+
+    party_stuff.classList.remove("hidden");
+    leave_party.classList.remove("hidden");
+    start_share.classList.remove("hidden");
+
+    stop_share.classList.add("hidden");
+    start_party.classList.add('hidden');
+}
+
+function partyEnd() {
+    party_banner.classList.add("is-fullheight");
+    party_welcome.textContent = "";
+
+    party_stuff.classList.add("hidden");
+    start_party.classList.remove('hidden');
+}
+
 function connectToRoom() {
     Twilio.Video.connect(access_token, {
         audio: false,
@@ -116,8 +138,10 @@ function connectToRoom() {
         name: room_name,
         automaticSubscription: false
     }).then(room => {
-        console.log("Connected to Room: ${room.name}");
+        console.log(`Connected to Room: ${room.name}`);
+
         room.localParticipant.isDj = false;
+        partyInit();
         roomHandlers(room);
 
         room.on('trackSubscribed', function(track) {
@@ -195,6 +219,13 @@ function connectToParty(e) {
 
 document.addEventListener("DOMContentLoaded", function() {
     start_party = document.getElementById('start-party');
+    party_banner = document.getElementById("party-banner");
+    party_welcome = document.getElementById("party-welcome");
+    party_stuff = document.getElementById("party-stuff");
+    leave_party = document.getElementById("leave-party");
+    start_share = document.getElementById("start-share");
+    stop_share = document.getElementById("stop-share");
+
     if (start_party) {
         start_party.addEventListener("submit", connectToParty);
     }
