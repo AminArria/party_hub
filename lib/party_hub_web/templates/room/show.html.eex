@@ -8,6 +8,11 @@
   </li>
 
   <li>
+    <strong>Description:</strong>
+    <%= @room.description %>
+  </li>
+
+  <li>
     <strong>Twilio room:</strong>
     <%= @room.twilio_room_id %>
   </li>

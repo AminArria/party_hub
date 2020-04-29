@@ -53,12 +53,21 @@ function insertParticipant(participant) {
     new_member_li.appendChild(text);
 
     join_button = document.createElement("button")
-    join_button.addEventListener("click", () => {
-       subscribeTo(participant.identity);
+
+    participant.on('trackPublished', () => {
+        if(join_button.childNodes.length == 0) {
+            join_button.addEventListener("click", () => {
+                subscribeTo(participant.identity);
+            });
+            join_button_text = document.createTextNode("Watch");
+            join_button.appendChild(join_button_text);
+            new_member_li.appendChild(join_button);
+        }
     });
-    join_button_text = document.createTextNode("Watch");
-    join_button.appendChild(join_button_text);
-    new_member_li.appendChild(join_button);
+
+    participant.on('trackUnpublished', () => {
+        join_button.remove();
+    });
 
     party_members.appendChild(new_member_li);
 }

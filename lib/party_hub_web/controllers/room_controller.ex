@@ -122,7 +122,7 @@ defmodule PartyHubWeb.RoomController do
       {:form, [{"Rules", "[{\"type\": \"include\", \"track\": \"dj_audio\"},{\"type\": \"include\", \"track\": \"dj_video\"},{\"type\": \"include\", \"publisher\": \"#{publisher}\"}]"}]},
       [],
       [hackney: [basic_auth: {Application.get_env(:party_hub, :account_sid), Application.get_env(:party_hub, :auth_token)}]]
-    ) |> IO.inspect
+    )
 
     conn
     |> put_status(200)

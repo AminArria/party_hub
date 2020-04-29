@@ -26,7 +26,11 @@ config :party_hub, :basic_auth,
   username: System.get_env("BASIC_AUTH_USER"),
   password: System.get_env("BASIC_AUTH_PASS")
 
-  # Configures the endpoint
+# Configures Ecto migrations
+config :party_hub, PartyHub.Repo,
+  migration_timestamps: [type: :timestamptz]
+
+# Configures the endpoint
 config :party_hub, PartyHubWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "cbl10+yAk19Q8UnmhG3XSQ8tvDb6B7nXqSv3Hk48oDSDJDK5/G342yTcqc9nvp5B",
