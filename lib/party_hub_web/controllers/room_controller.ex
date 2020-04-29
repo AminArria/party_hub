@@ -68,11 +68,35 @@ defmodule PartyHubWeb.RoomController do
     |> redirect(to: Routes.room_path(conn, :index))
   end
 
-  def join(conn, %{"id" => id, "user" => %{"name" => name}}) do
+  # def join(conn, %{"id" => id, "name" => name}) do
+  #   # TODO: horrible way to make unique identifiers, but it works.
+  #   # On the fron-end we can just remove everything after the last
+  #   # ocurrance of '_' to present the actual name given by the user
+  #   timestamp = DateTime.utc_now |> DateTime.to_unix
+  #   identity = "#{name}_#{timestamp}"
+
+  #   room = Parties.get_room!(id)
+
+  #   jwt =
+  #     ExTwilio.JWT.AccessToken.new(
+  #       account_sid: Application.get_env(:party_hub, :account_sid),
+  #       api_key: Application.get_env(:party_hub, :api_key),
+  #       api_secret: Application.get_env(:party_hub, :api_secret),
+  #       identity: identity,
+  #       expires_in: 14_400,
+  #       grants: [ExTwilio.JWT.AccessToken.VideoGrant.new(room: room.twilio_room_id)]
+  #     )
+  #     |> ExTwilio.JWT.AccessToken.to_jwt!
+
+  #   redirect(conn, to: Routes.room_path(conn, :party, room.id, room_name: room.twilio_room_id, identity: identity, token: jwt))
+  # end
+
+  def join(conn, %{"id" => id, "name" => name}) when name != "" do
     # TODO: horrible way to make unique identifiers, but it works.
     # On the fron-end we can just remove everything after the last
     # ocurrance of '_' to present the actual name given by the user
     timestamp = DateTime.utc_now |> DateTime.to_unix
+    name = String.trim(name)
     identity = "#{name}_#{timestamp}"
 
     room = Parties.get_room!(id)
@@ -88,7 +112,13 @@ defmodule PartyHubWeb.RoomController do
       )
       |> ExTwilio.JWT.AccessToken.to_jwt!
 
-    redirect(conn, to: Routes.room_path(conn, :party, room.id, room_name: room.twilio_room_id, identity: identity, token: jwt))
+    conn
+    |> json(%{room_name: room.twilio_room_id, identity: identity, token: jwt})
+  end
+
+  def party(conn, %{"id" => id}) do
+    room = Parties.get_room!(id)
+    render(conn, :party, room: room)
   end
 
   def party(conn, %{"id" => id, "token" => token, "identity" => identity}) do

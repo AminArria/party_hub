@@ -20,7 +20,6 @@ defmodule PartyHubWeb.Router do
 
     get "/", PageController, :index
     resources "/rooms", RoomController
-    get "/rooms/:id/join", RoomController, :join
     get "/rooms/:id/party", RoomController, :party
   end
 
@@ -29,6 +28,7 @@ defmodule PartyHubWeb.Router do
     pipe_through :api
 
     post "/party/subscribe_dj", RoomController, :subscribe_dj
+    post "/party/join", RoomController, :join
     post "/party/subscribe", RoomController, :subscribe
   end
 

@@ -4,7 +4,7 @@
       <div class="card">
         <div class="card-header">
           <p class="card-header-title"><%= room.name %></p>
-          <%= link to: Routes.room_path(@conn, :show, room.id), class: " card-header-icon" do %>
+          <%= link to: Routes.room_path(@conn, :party, room.id), class: " card-header-icon" do %>
             <strong class="button is-primary">Join</strong>
           <% end %>
         </div>
