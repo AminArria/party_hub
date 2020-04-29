@@ -1,7 +1,7 @@
-const query_params = new URLSearchParams(window.location.search);
-const room_name = query_params.get("room_name");
-const identity = query_params.get("identity");
-const access_token = query_params.get("token");
+// const query_params = new URLSearchParams(window.location.search);
+// const room_name = query_params.get("room_name");
+// const identity = query_params.get("identity");
+// const access_token = query_params.get("token");
 
 function subscribeToDj() {
     var xhr = new XMLHttpRequest();
@@ -109,7 +109,7 @@ function roomHandlers(room) {
     }
 };
 
-function connectToParty() {
+function connectToRoom() {
     Twilio.Video.connect(access_token, {
         audio: false,
         video: false,
@@ -166,9 +166,36 @@ function connectToParty() {
     });
 }
 
+function connectToParty(e) {
+    e.preventDefault();
+
+    data = new FormData(start_party)
+    name = data.get('party[name]');
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/party/join", true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.responseType = 'json'
+    xhr.onreadystatechange = () => {
+        if(xhr.readyState === XMLHttpRequest.DONE && xhr.status >= 200 && xhr.status < 300) {
+            access_token = xhr.response.token;
+            room_name = xhr.response.room_name;
+            identity = xhr.response.identity;
+            connectToRoom();
+        } else if (xhr.status >= 400) {
+            console.log("There was an error joining the room");
+        }
+    };
+
+    xhr.send(JSON.stringify({
+        name: data.get('party[name]'),
+        id: data.get('party[id]')
+    }));
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     start_party = document.getElementById('start-party');
     if (start_party) {
-        start_party.addEventListener("click", connectToParty);
+        start_party.addEventListener("submit", connectToParty);
     }
 });

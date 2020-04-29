@@ -1,6 +1,13 @@
 <h1><%= @room.name %></h1>
 
-<button id="start-party">Start Party!</button>
+<%= form_for :party, '#', [method: :get, id: "start-party"], fn f -> %>
+  <%= label f, :name %>
+  <%= text_input f, :name, required: true %>
+  <%= hidden_input f, :id, value: @room.id %>
+
+  <%= submit "Start Party!"%>
+<% end %>
+
 <div>
   <button id="leave-party">Leave party</button>
   <div>
