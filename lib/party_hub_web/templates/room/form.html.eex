@@ -5,14 +5,23 @@
     </div>
   <% end %>
 
-  <%= label f, :name %>
-  <%= text_input f, :name %>
-  <%= error_tag f, :name %>
+  <div class="field">
+    <%= label f, :name, class: "label" %>
+    <%= text_input f, :name, class: "input", required: true %>
+    <%= error_tag f, :name %>
+  </div>
 
-  <%= label f, :description %>
-  <%= text_input f, :description %>
+  <div class="field">
+    <%= label f, :description, class: "label" %>
+    <%= text_input f, :description, class: "input" %>
+  </div>
 
-  <div>
-    <%= submit "Save" %>
+  <div class="field is-grouped">
+    <div class="control">
+      <%= submit "Create", class: "button is-link" %>
+    </div>
+    <div class="control">
+      <%= link "Cancel", to: Routes.room_path(@conn, :index), class: "button is-light" %>
+    </div>
   </div>
 <% end %>

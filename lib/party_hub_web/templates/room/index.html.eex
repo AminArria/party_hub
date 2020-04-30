@@ -1,30 +1,32 @@
-<h1>Listing Rooms</h1>
+<section class="section">
+  <div class="container">
+    <div>
+      <%= link "Create Party", to: Routes.room_path(@conn, :new), class: "button is-info" %>
+    </div>
+    <div class="columns is-multiline">
+      <%= for room <- @rooms do %>
+        <div class="column is-4">
+          <div class="card">
+            <div class="card-header">
+              <p class="card-header-title"><%= room.name %></p>
+              <%= link to: Routes.room_path(@conn, :party, room.id), class: " card-header-icon" do %>
+                <strong class="button is-primary">Join</strong>
+              <% end %>
+            </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Twilio room</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for room <- @rooms do %>
-    <tr>
-      <td><%= room.name %></td>
-      <td><%= room.twilio_room_id %></td>
-
-      <td>
-        <span><%= link "Show", to: Routes.room_path(@conn, :show, room) %></span>
-        <span><%= link "Edit", to: Routes.room_path(@conn, :edit, room) %></span>
-        <span><%= link "Delete", to: Routes.room_path(@conn, :delete, room), method: :delete, data: [confirm: "Are you sure?"] %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
-
-<span><%= link "New Room", to: Routes.room_path(@conn, :new) %></span>
-
-<div id="local-media"></div>
+            <div class="card-content">
+              <div class="content">
+                <p class="subtitle">
+                  <%= room.description || "This is THE party!" %>
+                </p>
+                <p class="has-text-right">
+                  Started <%= PartyHubWeb.PageView.time_ago(room.inserted_at) %> ago
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

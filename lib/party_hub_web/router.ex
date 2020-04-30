@@ -17,7 +17,7 @@ defmodule PartyHubWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/rooms", RoomController
+    resources "/rooms", RoomController, only: [:index, :new, :create]
     get "/rooms/:id/party", RoomController, :party
   end
 

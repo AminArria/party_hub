@@ -29,7 +29,7 @@ defmodule PartyHubWeb.RoomController do
         # )
         conn
         |> put_flash(:info, "Room created successfully.")
-        |> redirect(to: Routes.room_path(conn, :show, room))
+        |> redirect(to: Routes.room_path(conn, :party, room))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

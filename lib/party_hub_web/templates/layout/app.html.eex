@@ -24,7 +24,7 @@
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-          <%= link "My Rooms", to: Routes.room_path(@conn, :index), class: "navbar-item" %>
+          <%= link "My Parties", to: Routes.room_path(@conn, :index), class: "navbar-item" %>
         </div>
 
         <div class="navbar-end">
