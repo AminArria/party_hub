@@ -146,7 +146,6 @@ function partyInit() {
     party.classList.remove("hidden");
 
     stop_share.classList.add("hidden");
-    start_party.classList.add('hidden');
 }
 
 function partyEnd() {
@@ -219,6 +218,7 @@ function connectToRoom() {
 
 function connectToParty(e) {
     e.preventDefault();
+    start_party.classList.add('hidden');
 
     data = new FormData(start_party)
     name = data.get('party[name]');
