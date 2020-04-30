@@ -43,6 +43,7 @@ function selfDisconnect(room) {
     });
 }
 
+
 function insertParticipant(participant) {
     console.log(participant.identity + ' joined the Room');
     const party_members = document.getElementById('party-members');
@@ -73,17 +74,25 @@ function insertParticipant(participant) {
             watch_button.addEventListener("click", () => {
                 subscriptions.push({"type": "include", "publisher": participant.identity});
                 subscribeTo();
-                // subscribeTo(participant.identity);
                 watch_button.classList.add("hidden");
                 unwatch_button.classList.remove("hidden");
+            });
+
+            unwatch_button.addEventListener("click", () => {
+                publishedTrack = false;
+                subscriptions = subscriptions.filter((sub) => sub.publisher !== participant.identity);
+                subscribeTo();
+                watch_button.classList.remove("hidden");
+                unwatch_button.classList.add("hidden");
             });
         }
     });
 
     participant.on('trackUnpublished', () => {
-        publishTrack = false;
+        publishedTrack = false;
         watch_button.classList.add("hidden");
         unwatch_button.classList.add("hidden");
+        subscriptions = subscriptions.filter((sub) => sub.publisher !== participant.identity);
     });
 
     party_members.appendChild(new_member);
