@@ -43,7 +43,7 @@ function selfDisconnect(room) {
     });
 }
 
-function insertParticipant(participant) {
+function insertParticipantOld(participant) {
     console.log(participant.identity + ' joined the Room');
     const party_members = document.getElementById('party-members');
 
@@ -71,6 +71,51 @@ function insertParticipant(participant) {
     });
 
     party_members.appendChild(new_member_li);
+}
+
+
+function insertParticipant(participant) {
+    console.log(participant.identity + ' joined the Room');
+    const party_members = document.getElementById('party-members');
+
+    var new_member_name = participant.identity.slice(0,-11);
+
+    new_member = document.createElement("p");
+    new_member.id = participant.identity;
+    new_member.classList.add("panel-block");
+
+    new_member.innerHTML =
+        `<span class="panel-icon">
+            <i class="fas fa-user" aria-hidden="true"></i>
+        </span>
+        <span>${new_member_name}</span>
+        <button class="watch button is-info is-small has-text-weight-bold hidden">Watch</button>
+        <button class="unwatch button is-warning is-small has-text-weight-bold hidden">Unwatch</button>`
+
+    publishedTrack = false;
+    watch_button = new_member.getElementsByClassName("watch")[0]
+    unwatch_button = new_member.getElementsByClassName("unwatch")[0]
+
+    participant.on('trackPublished', () => {
+        if(!publishedTrack) {
+            publishTrack = true;
+            watch_button.classList.remove("hidden");
+
+            watch_button.addEventListener("click", () => {
+                subscribeTo(participant.identity);
+                watch_button.classList.add("hidden");
+                unwatch_button.classList.remove("hidden");
+            });
+        }
+    });
+
+    participant.on('trackUnpublished', () => {
+        publishTrack = false;
+        watch_button.classList.add("hidden");
+        unwatch_button.classList.add("hidden");
+    });
+
+    party_members.appendChild(new_member);
 }
 
 function selfStartTrack(room) {
@@ -118,6 +163,7 @@ function partyInit() {
     party_stuff.classList.remove("hidden");
     leave_party.classList.remove("hidden");
     start_share.classList.remove("hidden");
+    party.classList.remove("hidden");
 
     stop_share.classList.add("hidden");
     start_party.classList.add('hidden');
@@ -128,6 +174,7 @@ function partyEnd() {
     party_welcome.textContent = "";
 
     party_stuff.classList.add("hidden");
+    party.classList.add("hidden");
     start_party.classList.remove('hidden');
 }
 
@@ -225,6 +272,7 @@ document.addEventListener("DOMContentLoaded", function() {
     leave_party = document.getElementById("leave-party");
     start_share = document.getElementById("start-share");
     stop_share = document.getElementById("stop-share");
+    party = document.getElementById("party");
 
     if (start_party) {
         start_party.addEventListener("submit", connectToParty);

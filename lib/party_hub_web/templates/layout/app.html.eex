@@ -43,10 +43,6 @@
         </div>
       </div>
     </nav>
-        <%= @inner_content %>
-    <section class="section">
-      <div class="container">
-      </div>
-    </section>
+    <%= @inner_content %>
   </body>
 </html>

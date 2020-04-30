@@ -4,9 +4,11 @@
       <h1 class="title">
         <%= @room.name %>
       </h1>
+
       <h2 class="subtitle">
         <%= @room.description || "This is THE party!" %>
       </h2>
+
       <%= form_for :party, '#', [method: :get, id: "start-party"], fn f -> %>
         <%= hidden_input f, :id, value: @room.id %>
         <div class="field has-addons has-addons-centered">
@@ -18,6 +20,7 @@
           </div>
         </div>
       <% end %>
+
       <div id="party-stuff" class="hidden">
         <p id="party-welcome"></p>
         <div>
@@ -26,23 +29,24 @@
           <button id="stop-share" class="button is-warning has-text-weight-bold">Stop sharing party</button>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<section class="section">
+<section id="party" class="section">
   <div class="container">
+    <div class="columns">
+      <div class="column is-three-quarters">
+        <div id="remote-media-div"></div>
+      </div>
 
-    <div>
-    <h2>Partygoers</h2>
-    <ul id="party-members"></ul>
+      <div class="column">
+        <nav id="party-members" class="panel">
+          <p class="panel-heading">
+            Partygoers
+          </p>
+        </nav>
+      </div>
     </div>
-
-    <div id="remote-media-div"></div>
-
-    <span><%= link "Edit", to: Routes.room_path(@conn, :edit, @room) %></span>
-    <span><%= link "Back", to: Routes.room_path(@conn, :index) %></span>
-
   </div>
 </section>
