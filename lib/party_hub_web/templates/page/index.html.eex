@@ -1,41 +1,45 @@
-<div class="columns is-multiline">
-  <%= for room <- @rooms do %>
-    <div class="column is-4">
-      <div class="card">
-        <div class="card-header">
-          <p class="card-header-title"><%= room.name %></p>
-          <%= link to: Routes.room_path(@conn, :party, room.id), class: " card-header-icon" do %>
-            <strong class="button is-primary">Join</strong>
-          <% end %>
-        </div>
-        <!--div class="card-image">
-          <figure class="image is-4by3">
-            <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-          </figure>
-        </div-->
-        <div class="card-content">
-          <!--div class="media">
-            <div class="media-left">
-              <figure class="image is-48x48">
-                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline">
+      <%= for room <- @rooms do %>
+        <div class="column is-4">
+          <div class="card">
+            <div class="card-header">
+              <p class="card-header-title"><%= room.name %></p>
+              <%= link to: Routes.room_path(@conn, :party, room.id), class: " card-header-icon" do %>
+                <strong class="button is-primary">Join</strong>
+              <% end %>
+            </div>
+            <!--div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
               </figure>
-            </div>
-            <div class="media-content">
-              <p class="title is-4">John Smith</p>
-              <p class="subtitle is-6">@johnsmith</p>
-            </div>
-          </div-->
+            </div-->
+            <div class="card-content">
+              <!--div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">John Smith</p>
+                  <p class="subtitle is-6">@johnsmith</p>
+                </div>
+              </div-->
 
-          <div class="content">
-            <p class="subtitle">
-              <%= room.description || "This is THE party!" %>
-            </p>
-            <p class="has-text-right">
-              Started <%= time_ago(room.inserted_at) %> ago
-            </p>
+              <div class="content">
+                <p class="subtitle">
+                  <%= room.description || "This is THE party!" %>
+                </p>
+                <p class="has-text-right">
+                  Started <%= time_ago(room.inserted_at) %> ago
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
     </div>
-  <% end %>
-</div>
+  </div>
+</section>
