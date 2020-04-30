@@ -33,7 +33,7 @@
   </div>
 </section>
 
-<section id="party" class="section">
+<section id="party" class="section hidden">
   <div class="container">
     <div class="columns">
       <div class="column is-three-quarters">

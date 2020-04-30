@@ -13,14 +13,14 @@ function subscribeToDj() {
     }));
 }
 
-function subscribeTo(publisher) {
+function subscribeTo() {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/api/party/subscribe", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({
         room_name: room_name,
         user: identity,
-        publisher: publisher
+        subscriptions: subscriptions
     }));
 }
 
@@ -41,36 +41,6 @@ function selfDisconnect(room) {
             publishTrack.track.stop();
         });
     });
-}
-
-function insertParticipantOld(participant) {
-    console.log(participant.identity + ' joined the Room');
-    const party_members = document.getElementById('party-members');
-
-    new_member_li = document.createElement("li");
-    new_member_li.id = participant.identity;
-
-    text = document.createTextNode(participant.identity);
-    new_member_li.appendChild(text);
-
-    join_button = document.createElement("button")
-
-    participant.on('trackPublished', () => {
-        if(join_button.childNodes.length == 0) {
-            join_button.addEventListener("click", () => {
-                subscribeTo(participant.identity);
-            });
-            join_button_text = document.createTextNode("Watch");
-            join_button.appendChild(join_button_text);
-            new_member_li.appendChild(join_button);
-        }
-    });
-
-    participant.on('trackUnpublished', () => {
-        join_button.remove();
-    });
-
-    party_members.appendChild(new_member_li);
 }
 
 
@@ -102,17 +72,27 @@ function insertParticipant(participant) {
             watch_button.classList.remove("hidden");
 
             watch_button.addEventListener("click", () => {
-                subscribeTo(participant.identity);
+                subscriptions.push({"type": "include", "publisher": participant.identity});
+                subscribeTo();
                 watch_button.classList.add("hidden");
                 unwatch_button.classList.remove("hidden");
+            });
+
+            unwatch_button.addEventListener("click", () => {
+                publishedTrack = false;
+                subscriptions = subscriptions.filter((sub) => sub.publisher !== participant.identity);
+                subscribeTo();
+                watch_button.classList.remove("hidden");
+                unwatch_button.classList.add("hidden");
             });
         }
     });
 
     participant.on('trackUnpublished', () => {
-        publishTrack = false;
+        publishedTrack = false;
         watch_button.classList.add("hidden");
         unwatch_button.classList.add("hidden");
+        subscriptions = subscriptions.filter((sub) => sub.publisher !== participant.identity);
     });
 
     party_members.appendChild(new_member);
@@ -166,7 +146,6 @@ function partyInit() {
     party.classList.remove("hidden");
 
     stop_share.classList.add("hidden");
-    start_party.classList.add('hidden');
 }
 
 function partyEnd() {
@@ -239,6 +218,7 @@ function connectToRoom() {
 
 function connectToParty(e) {
     e.preventDefault();
+    start_party.classList.add('hidden');
 
     data = new FormData(start_party)
     name = data.get('party[name]');
@@ -273,6 +253,8 @@ document.addEventListener("DOMContentLoaded", function() {
     start_share = document.getElementById("start-share");
     stop_share = document.getElementById("stop-share");
     party = document.getElementById("party");
+
+    subscriptions = [];
 
     if (start_party) {
         start_party.addEventListener("submit", connectToParty);

@@ -4,7 +4,6 @@ defmodule PartyHubWeb.PageController do
 
   def index(conn, _params) do
     rooms = Parties.get_recents()
-    |> IO.inspect
     render(conn, "index.html", rooms: rooms)
   end
 end

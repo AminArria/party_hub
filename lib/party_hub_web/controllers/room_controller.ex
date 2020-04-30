@@ -4,6 +4,8 @@ defmodule PartyHubWeb.RoomController do
   alias PartyHub.Parties
   alias PartyHub.Parties.Room
 
+  @dj_rules [%{type: "include", track: "dj_audio"}, %{type: "include", track: "dj_video"}]
+
   def index(conn, _params) do
     rooms = Parties.list_rooms()
     render(conn, "index.html", rooms: rooms)
@@ -27,7 +29,7 @@ defmodule PartyHubWeb.RoomController do
         # )
         conn
         |> put_flash(:info, "Room created successfully.")
-        |> redirect(to: Routes.room_path(conn, :show, room))
+        |> redirect(to: Routes.room_path(conn, :party, room))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -144,12 +146,15 @@ defmodule PartyHubWeb.RoomController do
     |> json(%{})
   end
 
-  def subscribe(conn, %{"room_name" => room_name, "user" => user, "publisher" => publisher}) do
+  def subscribe(conn, %{"room_name" => room_name, "user" => user, "subscriptions" => subscriptions}) do
+    rules = @dj_rules ++ subscriptions
+    {:ok, rules_json} = Phoenix.json_library.encode(rules)
+
     # TODO: Abstract this calls to its own module
     # TODO: check if there was an error with this request
     HTTPoison.post(
       "https://video.twilio.com/v1/Rooms/#{room_name}/Participants/#{user}/SubscribeRules",
-      {:form, [{"Rules", "[{\"type\": \"include\", \"track\": \"dj_audio\"},{\"type\": \"include\", \"track\": \"dj_video\"},{\"type\": \"include\", \"publisher\": \"#{publisher}\"}]"}]},
+      {:form, [{"Rules", rules_json}]},
       [],
       [hackney: [basic_auth: {Application.get_env(:party_hub, :account_sid), Application.get_env(:party_hub, :auth_token)}]]
     )
