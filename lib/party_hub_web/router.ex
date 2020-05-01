@@ -8,7 +8,7 @@ defmodule PartyHubWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :basic_auth, Application.compile_env(:party_hub, :basic_auth)
+    # plug :basic_auth, Application.compile_env(:party_hub, :basic_auth)
   end
 
   pipeline :api do
