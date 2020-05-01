@@ -36,7 +36,8 @@ config :party_hub, PartyHubWeb.Endpoint,
   secret_key_base: "cbl10+yAk19Q8UnmhG3XSQ8tvDb6B7nXqSv3Hk48oDSDJDK5/G342yTcqc9nvp5B",
   render_errors: [view: PartyHubWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: PartyHub.PubSub,
-  live_view: [signing_salt: "rWtGUrbV"]
+  live_view: [signing_salt: "rWtGUrbV"],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
 # Configures Elixir's Logger
 config :logger, :console,
