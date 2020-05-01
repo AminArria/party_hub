@@ -149,6 +149,12 @@ function partyEnd() {
     party_stuff.classList.add("hidden");
     party.classList.add("hidden");
     start_party.classList.remove('hidden');
+
+    subscriptions = [];
+    document.getElementById('party-members').innerHTML =
+        `<p class="panel-heading">
+            Partygoers
+        </p>`
 }
 
 function connectToRoom() {
