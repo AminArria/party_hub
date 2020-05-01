@@ -37,7 +37,7 @@ config :party_hub, PartyHubWeb.Endpoint,
   render_errors: [view: PartyHubWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: PartyHub.PubSub,
   live_view: [signing_salt: "rWtGUrbV"],
-  force_ssl: [rewrite_on: [:x_forwarded_proto]]
+  force_ssl: [rewrite_on: [:x_forwarded_proto], host: nil]
 
 # Configures Elixir's Logger
 config :logger, :console,
