@@ -255,6 +255,7 @@ document.addEventListener("DOMContentLoaded", function() {
     party = document.getElementById("party");
 
     subscriptions = [];
+    start_party.classList.remove("hidden");
 
     if (start_party) {
         start_party.addEventListener("submit", connectToParty);

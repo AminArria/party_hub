@@ -9,7 +9,7 @@
         <%= @room.description || "This is THE party!" %>
       </h2>
 
-      <%= form_for :party, '#', [method: :get, id: "start-party"], fn f -> %>
+      <%= form_for :party, '#', [method: :get, id: "start-party", class: "hidden"], fn f -> %>
         <%= hidden_input f, :id, value: @room.id %>
         <div class="field has-addons has-addons-centered">
           <div class="control">
