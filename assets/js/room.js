@@ -62,34 +62,28 @@ function insertParticipant(participant) {
         <button class="watch button is-info is-small has-text-weight-bold hidden">Watch</button>
         <button class="unwatch button is-warning is-small has-text-weight-bold hidden">Unwatch</button>`
 
-    publishedTrack = false;
-    watch_button = new_member.getElementsByClassName("watch")[0]
-    unwatch_button = new_member.getElementsByClassName("unwatch")[0]
+    const watch_button = new_member.getElementsByClassName("watch")[0]
+    const unwatch_button = new_member.getElementsByClassName("unwatch")[0]
 
     participant.on('trackPublished', () => {
-        if(!publishedTrack) {
-            publishTrack = true;
+        watch_button.classList.remove("hidden");
+
+        watch_button.addEventListener("click", () => {
+            subscriptions.push({"type": "include", "publisher": participant.identity});
+            subscribeTo();
+            watch_button.classList.add("hidden");
+            unwatch_button.classList.remove("hidden");
+        });
+
+        unwatch_button.addEventListener("click", () => {
+            subscriptions = subscriptions.filter((sub) => sub.publisher !== participant.identity);
+            subscribeTo();
             watch_button.classList.remove("hidden");
-
-            watch_button.addEventListener("click", () => {
-                subscriptions.push({"type": "include", "publisher": participant.identity});
-                subscribeTo();
-                watch_button.classList.add("hidden");
-                unwatch_button.classList.remove("hidden");
-            });
-
-            unwatch_button.addEventListener("click", () => {
-                publishedTrack = false;
-                subscriptions = subscriptions.filter((sub) => sub.publisher !== participant.identity);
-                subscribeTo();
-                watch_button.classList.remove("hidden");
-                unwatch_button.classList.add("hidden");
-            });
-        }
+            unwatch_button.classList.add("hidden");
+        });
     });
 
     participant.on('trackUnpublished', () => {
-        publishedTrack = false;
         watch_button.classList.add("hidden");
         unwatch_button.classList.add("hidden");
         subscriptions = subscriptions.filter((sub) => sub.publisher !== participant.identity);
