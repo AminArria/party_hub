@@ -103,6 +103,9 @@ function selfStartTrack(room) {
                 console.log('Started sending video and audio tracks');
                 start_share.classList.add('hidden');
                 stop_share.classList.remove('hidden');
+                localTracks.forEach((track) => {
+                    document.getElementById('remote-media-div').appendChild(track.attach());
+                });
             });
         });
     });
@@ -190,8 +193,12 @@ function connectToRoom() {
                 audio: {name: "dj_audio"},
                 video: { name: "dj_video" }
             }).then(function(localTracks) {
+                start_share.classList.add("hidden");
                 room.localParticipant.publishTracks(localTracks).then(() => {
                     console.log("Published my track for DJ'ing");
+                    localTracks.forEach((track) => {
+                        document.getElementById('remote-media-div').appendChild(track.attach());
+                    });
                 });
             });
         } else {
